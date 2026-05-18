@@ -1,23 +1,25 @@
 'use client';
-import { useRef } from 'react';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
 
-export default function Hero() {
-  const container = useRef(null);
+import { useState, useCallback } from 'react';
+import { Hero }         from '@/components/Hero';
+import { About }        from '@/components/About';
+import { Pricing }      from '@/components/Pricing';
+import BookingModal     from '@/components/BookingModal';
 
-  useGSAP(() => {
-    // Only animate elements that exist within the 'container' ref
-    gsap.to(".hero-status", { opacity: 1, duration: 1 });
-    gsap.to(".hero-hl-1", { opacity: 1, duration: 1 });
-    // Add all your other animations here
-  }, { scope: container }); 
+export default function Home() {
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
+
+  const openBooking  = useCallback(() => setIsBookingOpen(true),  []);
+  const closeBooking = useCallback(() => setIsBookingOpen(false), []);
 
   return (
-    <div ref={container}>
-      {/* Ensure these class names match your GSAP targets exactly */}
-      <div className="hero-status">...</div>
-      <div className="hero-hl-1">...</div>
-    </div>
+    <>
+      <main>
+        <Hero   onBookingOpen={openBooking} />
+        <About />
+        <Pricing onBookingOpen={openBooking} />
+      </main>
+      <BookingModal isOpen={isBookingOpen} onClose={closeBooking} />
+    </>
   );
 }
