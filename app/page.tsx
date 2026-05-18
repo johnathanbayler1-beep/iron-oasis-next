@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import { Hero }         from '@/components/Hero';
-import { About }        from '@/components/About';
-import { Pricing }      from '@/components/Pricing';
-import BookingModal     from '@/components/BookingModal';
+iimport { Hero } from '../components/Hero';
+import { About } from '../components/About';
+import { Pricing } from '../components/Pricing';
+import BookingModal from '../components/BookingModal';
 
 export default function Home() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
