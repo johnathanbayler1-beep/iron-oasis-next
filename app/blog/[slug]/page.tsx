@@ -1,13 +1,13 @@
 import { notFound }      from 'next/navigation';
 import type { Metadata } from 'next';
-import { TelemetryMatrix }   from '@/components/TelemetryMatrix';
-import { RealEstateMatrix }  from '@/components/RealEstateMatrix';
+import { TelemetryMatrix }   from '../../../components/TelemetryMatrix';
+import { RealEstateMatrix }  from '../../../components/RealEstateMatrix';
 import {
   getPostBySlug,
   getAllSlugs,
   type ComponentMarker,
   type Segment,
-} from '@/lib/blog';
+} from '../../../lib/blog';
 
 /* ── Component map ────────────────────────────────────────────────── */
 const COMPONENT_MAP: Record<ComponentMarker, React.ComponentType> = {

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { Bebas_Neue, Space_Mono } from 'next/font/google';
 import './globals.css';
-import { SmoothScroll } from '@/components/SmoothScroll';
-import { SplashIntro } from '@/components/SplashIntro';
-import { Nav } from '@/components/Nav';
+import { SmoothScroll } from '../components/SmoothScroll';
+import { SplashIntro }  from '../components/SplashIntro';
+import { Nav }          from '../components/Nav';
 
 /* ── Google Fonts — Next.js font optimization ──────────────────── */
 const bebasNeue = Bebas_Neue({
