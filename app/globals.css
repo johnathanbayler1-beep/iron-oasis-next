@@ -1,0 +1,639 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════
+   IRON OASIS — GLOBAL DESIGN SYSTEM
+   Mode: Tactical Telemetry (Industrial Brutalist — Dark)
+   Palette: Zero-saturation black / chrome / chalk
+   Accent: Hazard Red #E61919 (single accent, used sparingly)
+═══════════════════════════════════════════════════════════════════ */
+
+/* ── Design Tokens ─────────────────────────────────────────────── */
+:root {
+
+  /* ── Core dark scale (lightest → darkest) */
+  --steel:       #1a1a1a;   /* Lightest dark — card/panel surfaces           */
+  --ink:         #121212;   /* Deep base — section backgrounds                */
+  --soot:        #0a0a0a;   /* Absolute black abyss — body/hero backgrounds   */
+
+  /* ── Chrome scale */
+  --chrome:      #d8d8d8;   /* Bright chrome highlight — connects to brand    */
+  --chrome-mid:  #8a8a8a;   /* Mid chrome — secondary labels, muted data      */
+  --chrome-dark: #262626;   /* Structural seam — gap: 1px grid trick border   */
+
+  /* ── Pure white */
+  --chalk:       #f5f5f5;   /* Stark raw white — primary typographic layer    */
+
+  /* ── Single accent: hazard/aviation red */
+  --signal:      #E61919;   /* Max one signal element per section             */
+
+  /* ── Semantic aliases */
+  --muted:  rgba(245, 245, 245, 0.42); /* body text, descriptions             */
+  --wire:   rgba(245, 245, 245, 0.08); /* hairline structural borders          */
+
+  /* ── Typography */
+  --font-display: var(--font-bebas), 'Bebas Neue', sans-serif;
+  --font-mono:    var(--font-space-mono), 'Space Mono', monospace;
+
+  /* ── Easing */
+  --ease-tac:      cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-expo:  cubic-bezier(0.7, 0, 0.84, 0);
+
+  /* ── Bezel system */
+  --bezel-outer:   1px solid var(--chrome-dark);
+  --bezel-inner:   1px solid rgba(245, 245, 245, 0.05);
+  --bezel-signal:  1px solid var(--signal);
+  --bezel-chrome:  1px solid var(--chrome);
+
+  /* ── Layout */
+  --nav-h:          3.5rem;
+  --section-gap:    clamp(5rem, 10vw, 8rem);
+  --container-max:  1360px;
+  --container-pad:  clamp(1rem, 5vw, 4rem);
+}
+
+/* ── Base Reset ─────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto;           /* Lenis owns scroll, not browser          */
+}
+
+body {
+  background-color: var(--soot);   /* Absolute black abyss                    */
+  color: var(--chalk);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── Typography Scale ───────────────────────────────────────────── */
+/* Macro-typography: Bebas Neue — extreme scale, compressed leading  */
+
+.t-display {
+  font-family:    var(--font-display);
+  font-size:      clamp(4rem, 12vw, 10.5rem);
+  line-height:    0.88;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color:          var(--chalk);
+}
+
+.t-headline {
+  font-family:    var(--font-display);
+  font-size:      clamp(2.5rem, 6vw, 5.5rem);
+  line-height:    0.9;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color:          var(--chalk);
+}
+
+.t-subhead {
+  font-family:    var(--font-display);
+  font-size:      clamp(1.5rem, 3vw, 2.75rem);
+  line-height:    0.95;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color:          var(--chalk);
+}
+
+/* Micro-typography: Space Mono — monospaced data / telemetry        */
+
+.t-label {
+  font-family:    var(--font-mono);
+  font-size:      0.5625rem;
+  font-weight:    700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color:          var(--chrome-mid);
+}
+
+.t-label--chalk  { color: var(--chalk);      }
+.t-label--signal { color: var(--signal);     }
+.t-label--chrome { color: var(--chrome);     }
+
+.t-body {
+  font-family: var(--font-mono);
+  font-size:   0.875rem;
+  line-height: 1.78;
+  color:       var(--muted);
+  max-width:   58ch;
+}
+
+.t-data {
+  font-family:    var(--font-mono);
+  font-size:      0.6875rem;
+  letter-spacing: 0.08em;
+  color:          var(--muted);
+}
+
+.t-price {
+  font-family:    var(--font-display);
+  font-size:      clamp(3rem, 7vw, 5.5rem);
+  line-height:    1;
+  letter-spacing: -0.025em;
+  color:          var(--chalk);
+}
+
+/* ── Layout Primitives ──────────────────────────────────────────── */
+.container {
+  width:         100%;
+  max-width:     var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+.section {
+  padding-block: var(--section-gap);
+}
+
+/* ── Double-Bezel Architecture ──────────────────────────────────── */
+/*
+ * Usage:
+ *   <div class="bezel">
+ *     <div class="bezel__inner"> … </div>
+ *   </div>
+ *
+ * Variant: bezel--signal for Oasis Unlimited card / hero accents
+ */
+
+.bezel {
+  border:     var(--bezel-outer);
+  padding:    2px;
+  background: transparent;
+  position:   relative;
+}
+
+.bezel__inner {
+  border:     var(--bezel-inner);
+  padding:    clamp(1.5rem, 3vw, 2.5rem);
+  background: var(--steel);
+  position:   relative;
+}
+
+.bezel--signal {
+  border: var(--bezel-signal);
+}
+
+.bezel--signal .bezel__inner {
+  border:     1px solid rgba(230, 25, 25, 0.2);
+  background: #100808;
+}
+
+/* ── Sub-pixel Seam Grid Technique ─────────────────────────────── */
+/*
+ * Apply to grid/flex container:
+ *   background: var(--chrome-dark);
+ *   gap: 1px;
+ * Children get their own background. The 1px gap bleeds through as
+ * a razor-sharp compartment line with zero border declarations.
+ */
+
+.seam-grid {
+  background: var(--chrome-dark);
+  gap:        1px;
+}
+
+/* ── Structural Grid Overlay ────────────────────────────────────── */
+.grid-overlay {
+  position:         absolute;
+  inset:            0;
+  background-image:
+    linear-gradient(rgba(245, 245, 245, 0.016) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 245, 245, 0.016) 1px, transparent 1px);
+  background-size:  80px 80px;
+  pointer-events:   none;
+}
+
+/* ── CRT Scanline Texture ───────────────────────────────────────── */
+.scanlines::after {
+  content:    '';
+  position:   absolute;
+  inset:      0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 4px
+  );
+  pointer-events: none;
+  z-index:    1;
+}
+
+/* ── Horizontal Rule Dividers ───────────────────────────────────── */
+.rule {
+  border:     none;
+  border-top: 1px solid var(--chrome-dark);
+}
+
+.rule--chrome {
+  border-top-color: var(--chrome);
+}
+
+.rule--signal {
+  border-top-color: var(--signal);
+}
+
+/* ── ASCII Frame Corners ────────────────────────────────────────── */
+.ascii-corner {
+  position:      absolute;
+  font-family:   var(--font-mono);
+  font-size:     0.55rem;
+  color:         var(--chrome-dark);
+  line-height:   1;
+  pointer-events: none;
+  user-select:   none;
+}
+
+.ascii-corner--tl { top: 5px;    left: 5px;  }
+.ascii-corner--tr { top: 5px;    right: 5px; }
+.ascii-corner--bl { bottom: 5px; left: 5px;  }
+.ascii-corner--br { bottom: 5px; right: 5px; }
+
+.ascii-corner--signal { color: var(--signal); }
+.ascii-corner--chrome { color: var(--chrome); }
+
+/* ── Status Dot ─────────────────────────────────────────────────── */
+.status-dot {
+  display:      inline-block;
+  width:        5px;
+  height:       5px;
+  border-radius: 50%;
+  background:   var(--signal);
+  animation:    pulse-signal 2.2s var(--ease-tac) infinite;
+}
+
+@keyframes pulse-signal {
+  0%, 100% { opacity: 1; transform: scale(1);    }
+  50%       { opacity: 0.3; transform: scale(0.8); }
+}
+
+@keyframes scan {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Button System ──────────────────────────────────────────────── */
+/*
+ * Zero border-radius everywhere — mechanical rigidity required.
+ * All corners exactly 90 degrees.
+ */
+
+.btn {
+  display:         inline-flex;
+  align-items:     center;
+  gap:             0.75rem;
+  font-family:     var(--font-mono);
+  font-size:       0.625rem;
+  font-weight:     700;
+  letter-spacing:  0.16em;
+  text-transform:  uppercase;
+  padding:         0.9375rem 1.875rem;
+  border:          1px solid currentColor;
+  background:      transparent;
+  cursor:          pointer;
+  text-decoration: none;
+  white-space:     nowrap;
+  position:        relative;
+  transition:
+    background 0.22s var(--ease-tac),
+    color      0.22s var(--ease-tac),
+    border-color 0.22s var(--ease-tac);
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn--primary {
+  background:   var(--chalk);
+  color:        var(--soot);
+  border-color: var(--chalk);
+}
+.btn--primary:hover {
+  background: transparent;
+  color:      var(--chalk);
+}
+
+.btn--signal {
+  background:   var(--signal);
+  color:        var(--chalk);
+  border-color: var(--signal);
+}
+.btn--signal:hover {
+  background: transparent;
+  color:      var(--signal);
+}
+
+.btn--ghost {
+  background:   transparent;
+  color:        var(--chalk);
+  border-color: var(--chrome-dark);
+}
+.btn--ghost:hover {
+  border-color: var(--chrome);
+}
+
+.btn--chrome {
+  background:   transparent;
+  color:        var(--chrome);
+  border-color: var(--chrome-dark);
+}
+.btn--chrome:hover {
+  background:   var(--chrome);
+  color:        var(--soot);
+  border-color: var(--chrome);
+}
+
+/* Button-in-button trailing icon */
+.btn__trail {
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  width:           1.375rem;
+  height:          1.375rem;
+  border:          1px solid currentColor;
+  font-size:       0.7rem;
+  flex-shrink:     0;
+  transition:      transform 0.2s var(--ease-tac);
+}
+.btn:hover .btn__trail { transform: translateX(3px); }
+
+/* ── Nav Link Hover Underline ───────────────────────────────────── */
+.nav-link {
+  position:        relative;
+  text-decoration: none;
+  color:           var(--chrome-mid);
+  transition:      color 0.2s var(--ease-tac);
+}
+
+.nav-link::after {
+  content:          '';
+  position:         absolute;
+  bottom:           -2px;
+  left:             0;
+  width:            100%;
+  height:           1px;
+  background:       var(--chrome);
+  transform:        scaleX(0);
+  transform-origin: left center;
+  transition:       transform 0.3s var(--ease-tac);
+}
+
+.nav-link:hover          { color: var(--chalk); }
+.nav-link:hover::after   { transform: scaleX(1); }
+.nav-link--active        { color: var(--chalk); }
+.nav-link--active::after { transform: scaleX(1); }
+
+/* ── Hamburger Lines ────────────────────────────────────────────── */
+.hamburger-line {
+  display:          block;
+  width:            22px;
+  height:           1px;
+  background:       var(--chrome);
+  transition:       transform 0.3s var(--ease-tac), opacity 0.2s, width 0.3s var(--ease-tac);
+  transform-origin: center;
+}
+
+/* ── Full-screen menu link ──────────────────────────────────────── */
+.menu-link {
+  color:           var(--chalk);
+  text-decoration: none;
+  line-height:     0.88;
+  transition:      color 0.2s var(--ease-tac);
+}
+.menu-link:hover { color: var(--chrome); }
+
+/* ── GSAP Scroll Reveal Base States ────────────────────────────── */
+/* GSAP owns transform/opacity on these — never set them in CSS     */
+
+[data-anim="fade-up"] {
+  opacity:    0;
+  transform:  translateY(2.5rem);
+  will-change: opacity, transform;
+}
+
+[data-anim="clip-left"] {
+  clip-path:   inset(0 100% 0 0);
+  will-change: clip-path;
+}
+
+[data-anim="clip-up"] {
+  clip-path:   inset(100% 0 0 0);
+  will-change: clip-path;
+}
+
+/* ── Lenis Integration ──────────────────────────────────────────── */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ── Selection ──────────────────────────────────────────────────── */
+::selection {
+  background: var(--chrome);
+  color:      var(--soot);
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────────── */
+::-webkit-scrollbar         { width: 2px; }
+::-webkit-scrollbar-track   { background: var(--soot); }
+::-webkit-scrollbar-thumb   { background: var(--chrome-dark); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   RESPONSIVE RULES
+═══════════════════════════════════════════════════════════════════ */
+
+/* ── Global Mobile ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .bezel__inner { padding: 1.25rem; }
+  .btn          { width: 100%; justify-content: center; }
+  .t-body       { max-width: 100%; }
+}
+
+/* ── Hero Mobile (< 768px) ──────────────────────────────────────── */
+@media (max-width: 767px) {
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    grid-template-rows:    auto auto !important;
+  }
+  .hero-left {
+    border-right:   none !important;
+    padding-right:  0 !important;
+    padding-top:    6rem !important;
+    padding-bottom: 2rem !important;
+    min-height:     auto !important;
+  }
+  .hero-center {
+    min-height: 60vw !important;
+    max-height: 60vh !important;
+  }
+  .hero-right-data {
+    display: none !important;
+  }
+}
+
+/* ── Hero Tablet (768px – 1023px) ───────────────────────────────── */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .hero-right-data {
+    display: none !important;
+  }
+}
+
+/* ── About Mobile (< 768px) ─────────────────────────────────────── */
+@media (max-width: 767px) {
+  .about-primary { grid-template-columns: 1fr !important; }
+  .about-bento   { grid-template-columns: 1fr !important; }
+  .about-stats   { flex-direction: row !important; gap: 1px !important; }
+  .about-stat    { flex: 1 !important; padding: 1rem 0.75rem !important; }
+}
+
+/* ── About Tablet (768px – 1023px) ──────────────────────────────── */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .about-bento { grid-template-columns: 1fr 1fr !important; }
+  .about-bento > div:last-child { grid-column: 1 / -1 !important; }
+}
+
+/* ── Pricing Mobile (< 768px) ───────────────────────────────────── */
+@media (max-width: 767px) {
+  .pricing-grid    { grid-template-columns: 1fr !important; }
+  .pricing-featured { order: 3; }
+  .pricing-header-split { grid-template-columns: 1fr !important; }
+  .pricing-card .btn { width: 100% !important; }
+}
+
+/* ── Pricing Tablet (768px – 1023px) ────────────────────────────── */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .pricing-grid { grid-template-columns: 1fr 1fr !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BLOG PROSE
+   Scoped to .blog-prose — never leaks into layout or other sections.
+   max-width: 100% + overflow-wrap prevents any horizontal overflow.
+═══════════════════════════════════════════════════════════════════ */
+.blog-prose {
+  width:           100%;
+  max-width:       100%;
+  overflow-wrap:   break-word;
+  word-break:      break-word;
+  margin-bottom:   clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.blog-prose p {
+  font-family:    var(--font-mono);
+  font-size:      0.875rem;
+  line-height:    1.85;
+  color:          var(--chrome-mid);
+  margin-bottom:  1.375rem;
+  max-width:      68ch;
+}
+
+.blog-prose h2 {
+  font-family:    var(--font-display);
+  font-size:      clamp(1.75rem, 3.5vw, 2.75rem);
+  line-height:    0.92;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color:          var(--chalk);
+  margin-top:     clamp(2.5rem, 5vw, 3.5rem);
+  margin-bottom:  1.125rem;
+}
+
+.blog-prose h3 {
+  font-family:    var(--font-mono);
+  font-size:      0.6875rem;
+  font-weight:    700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color:          var(--chrome);
+  margin-top:     2rem;
+  margin-bottom:  0.75rem;
+}
+
+.blog-prose strong { color: var(--chalk); font-weight: 700; }
+
+.blog-prose em {
+  font-style: italic;
+  color:      rgba(245, 245, 245, 0.5);
+}
+
+.blog-prose hr {
+  border:     none;
+  height:     1px;
+  background: var(--chrome-dark);
+  margin:     clamp(2rem, 4vw, 3rem) 0;
+}
+
+.blog-prose ul,
+.blog-prose ol {
+  padding-left:  1.5rem;
+  margin-bottom: 1.375rem;
+  max-width:     68ch;
+}
+
+.blog-prose li {
+  font-family:   var(--font-mono);
+  font-size:     0.875rem;
+  line-height:   1.75;
+  color:         var(--chrome-mid);
+  margin-bottom: 0.25rem;
+}
+
+.blog-prose a {
+  color:           var(--chrome);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition:      color 0.2s var(--ease-tac);
+}
+
+.blog-prose a:hover { color: var(--chalk); }
+
+.blog-prose code {
+  font-family:      var(--font-mono);
+  font-size:        0.75rem;
+  color:            var(--chrome);
+  background:       var(--steel);
+  padding:          0.15em 0.4em;
+  border:           1px solid var(--chrome-dark);
+}
+
+/* Mobile: relax max-width on prose elements */
+@media (max-width: 767px) {
+  .blog-prose p,
+  .blog-prose ul,
+  .blog-prose ol { max-width: 100%; }
+}
+
+/* ── Network Expansion Card Mobile ──────────────────────────────── */
+@media (max-width: 767px) {
+  .network-expansion-grid { grid-template-columns: 1fr !important; }
+}

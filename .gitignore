@@ -1,0 +1,24 @@
+# dependencies
+/node_modules
+
+# Next.js build output
+/.next
+/out
+
+# environment variables — never commit these
+.env
+.env.local
+.env.*.local
+
+# Vercel / Netlify
+.vercel
+.netlify
+
+# OS
+.DS_Store
+Thumbs.db
+
+# debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
