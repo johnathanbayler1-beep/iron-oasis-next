@@ -133,14 +133,14 @@ export default function HeroSequence() {
     <div ref={containerRef} className="relative bg-black" style={{ height: "600vh" }}>
       <div
         className="sticky top-0 w-full overflow-hidden bg-black"
-        style={{ height: "100svh", top: 0 }}
+        style={{ height: "100svh" }}
       >
         {/* Frame canvas — opacity-0 until frame 1 paints */}
         <canvas
           ref={canvasRef}
           width={1920}
           height={1080}
-          className="absolute inset-0 w-full h-full object-cover z-0"
+          className="absolute inset-0 w-full h-full z-0"
           style={{ opacity: 0, transition: "opacity 0.7s" }}
         />
 

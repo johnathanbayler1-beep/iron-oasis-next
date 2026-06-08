@@ -26,7 +26,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${bebasNeue.variable} ${spaceMono.variable}`}>
-      <body className="antialiased overflow-x-hidden bg-black text-white">
+      <body className="antialiased overflow-x-clip bg-black text-white">
         {children}
       </body>
     </html>
